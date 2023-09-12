@@ -20,7 +20,8 @@ import ScrollButton from "../components/utils/ScrollButton";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import ArrowButton from "../components/utils/ArrowButton";
 import { IconShoppingCart } from "@tabler/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSetConfiguratorItem } from "../components/context/configuratorContext";
 
 const productSliderData = [
   {
@@ -273,6 +274,8 @@ export default function Home({ initialPageDelay }) {
   const { classes } = useStyles();
 
   const ShoppingCartButtonControls = useAnimation();
+  const navigate = useNavigate();
+  const SetConfiguratorItem = useSetConfiguratorItem();
 
   return (
     <motion.div initial={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -560,6 +563,13 @@ export default function Home({ initialPageDelay }) {
                     transition: { type: "spring" },
                   });
                 }}
+                onClick={() => {
+                  SetConfiguratorItem({
+                    name: productSliderData[activeSlide]["name"],
+                    priceID: "",
+                  });
+                  navigate("/konfigurator");
+                }}
               >
                 <motion.div animate={ShoppingCartButtonControls}>
                   <IconShoppingCart />
@@ -569,14 +579,18 @@ export default function Home({ initialPageDelay }) {
           </>
         )}
         <motion.div
-          initial={{ y: smScreen ? "-100vh" : 0 }}
+          initial={{ y: smScreen ? "-100vh" : 0, opacity: 0 }}
           animate={{
             y: 0,
+            opacity: 1,
             transition: {
               delay: initialPageDelay + 0.6,
               type: "tween",
               duration: 0.4,
               ease: "easeOut",
+              opacity: {
+                delay: initialPageDelay + 0.2,
+              },
             },
           }}
           className={classes.CarouselDiv}

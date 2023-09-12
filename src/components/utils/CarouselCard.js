@@ -1,11 +1,10 @@
 import { createStyles, Image, Card, Text, Group, Button } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { IconStar } from "@tabler/icons";
-import { useShoppingCart } from "../context/shoppingCartContext";
 import { useNavigate } from "react-router-dom";
 import { useSetConfiguratorItem } from "../context/configuratorContext";
 import { useState } from "react";
-import { useSmScreen, useXsScreen } from "../context/mediaQueryContext";
+import { useSmScreen } from "../context/mediaQueryContext";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   card: {
@@ -81,8 +80,11 @@ export function CarouselCard({
     <Carousel.Slide key={image}>
       <Image
         src={image}
-        height={smScreen ? 150 : 130}
         width={smScreen ? 150 : 130}
+        sx={{
+          maxHeight: smScreen ? 160 : 140,
+          minHeight: smScreen ? 160 : 140,
+        }}
         my={35}
         mx="auto"
       />
@@ -126,7 +128,7 @@ export function CarouselCard({
       <Text
         size={smScreen ? 14 : "xs"}
         color="dimmed"
-        mt="sm"
+        mt={8}
         sx={{ flexGrow: 1 }}
       >
         {description}

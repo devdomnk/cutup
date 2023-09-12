@@ -3,24 +3,19 @@ import {
   Stack,
   Title,
   Text,
-  Image,
   Container,
   createStyles,
   useMantineTheme,
 } from "@mantine/core";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CarouselCard } from "../components/utils/CarouselCard.js";
 import {
   collection,
   collectionGroup,
-  getDoc,
   getDocs,
-  limit,
   query,
   where,
 } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { useSmScreen } from "../components/context/mediaQueryContext.js";
 import { useFirestore } from "../components/context/firebaseContext.js";
 import { motion } from "framer-motion";
@@ -130,8 +125,9 @@ export default function Produkte() {
           name: item.data().name,
           description: item.data().description,
           images: item.data().images,
-          price: prices.find((price) => price.product == item.id).amount / 100,
-          priceID: prices.find((price) => price.product == item.id).id,
+          price:
+            prices.find((price) => price.product === item.id)?.amount / 100,
+          priceID: prices.find((price) => price.product === item.id)?.id,
         });
       });
 
@@ -156,7 +152,7 @@ export default function Produkte() {
       });
       setProducts(productCards);
     });
-  }, []);
+  }, [firestore]);
 
   return (
     <motion.div
