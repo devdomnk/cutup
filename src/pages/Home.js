@@ -22,6 +22,7 @@ import ArrowButton from "../components/utils/ArrowButton";
 import { IconShoppingCart } from "@tabler/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useSetConfiguratorItem } from "../components/context/configuratorContext";
+import Skeleton from "react-loading-skeleton";
 
 const productSliderData = [
   {
@@ -476,6 +477,7 @@ export default function Home({ initialPageDelay }) {
                     zum Konfigurator
                   </Button>
                 </Link>
+                <Skeleton />
               </motion.div>
             </Group>
           </div>

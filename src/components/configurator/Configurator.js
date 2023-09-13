@@ -13,7 +13,7 @@ import {
   Box,
 } from "@mantine/core";
 
-import { getBytes, getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
 import React, {
   forwardRef,
   useEffect,
@@ -188,7 +188,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
     validate: {
       density: (value) => (value == null ? "Wähle eine Option" : null),
       resolution: (value) => (value == null ? "Wähle eine Option" : null),
-      color: (value) => (value == "#A3A3A3" ? "Wähle eine Option" : null),
+      color: (value) => (value === "#A3A3A3" ? "Wähle eine Option" : null),
     },
   });
 
@@ -212,7 +212,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
       });
     }
     getAvailableColors();
-  }, []);
+  }, [firestore]);
 
   const [selectedMaterial, setSelectedMaterial] = useState("Beste Option");
   const [materialColors, setMaterialColors] = useState([]);
@@ -352,12 +352,12 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
     }
 
     const filteredColors = availableColors.filter(
-      (color) => color[selectedMaterial] == true
+      (color) => color[selectedMaterial] === true
     );
     setMaterialColors(filteredColors);
 
     form.setFieldValue("color", "#A3A3A3");
-  }, [selectedMaterial, availableColors]);
+  }, [selectedMaterial, availableColors, form]);
 
   function storeObject() {
     setObjectData((prev) => ({

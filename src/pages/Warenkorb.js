@@ -51,7 +51,7 @@ export default function Warenkorb() {
       });
     }
     getAvailableColors();
-  }, []);
+  }, [firestore]);
 
   return (
     <motion.div

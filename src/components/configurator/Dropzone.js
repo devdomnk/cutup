@@ -13,6 +13,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#ffffff10",
     [theme.fn.smallerThan("sm")]: {
       height: 600,
     },

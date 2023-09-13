@@ -18,7 +18,8 @@ import {
 } from "firebase/firestore";
 import { useSmScreen } from "../components/context/mediaQueryContext.js";
 import { useFirestore } from "../components/context/firebaseContext.js";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { v4 as uuidv4 } from "uuid";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -98,7 +99,10 @@ export default function Produkte() {
   const firestore = useFirestore();
   const smScreen = useSmScreen();
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([
+    <CarouselCard key={uuidv4()} />,
+    <CarouselCard key={uuidv4()} />,
+  ]);
 
   useEffect(() => {
     async function fetchItems() {
@@ -128,6 +132,7 @@ export default function Produkte() {
           price:
             prices.find((price) => price.product === item.id)?.amount / 100,
           priceID: prices.find((price) => price.product === item.id)?.id,
+          rating: Math.random().toFixed(1) * 5,
         });
       });
 
@@ -147,6 +152,7 @@ export default function Produkte() {
             images={item.images}
             price={item.price}
             priceID={item.priceID}
+            rating={item.rating}
           />,
         ];
       });
@@ -257,7 +263,7 @@ export default function Produkte() {
             zIndex: -1,
           }}
         ></div>
-        {products}
+        <AnimatePresence mode="wait">{products}</AnimatePresence>
       </Container>
     </motion.div>
   );
