@@ -7,7 +7,6 @@ import Produkte from "./pages/Produkte";
 import Hilfe from "./pages/Hilfe";
 import Warenkorb from "./pages/Warenkorb";
 import { AnimatePresence } from "framer-motion";
-import Skeleton from "react-loading-skeleton";
 
 export default function AnimatedRoutes() {
   const location = useLocation();
@@ -36,7 +35,6 @@ export default function AnimatedRoutes() {
           element={
             <>
               <Home initialPageDelay={initialPageDelay} />
-              <Skeleton />
             </>
           }
         ></Route>

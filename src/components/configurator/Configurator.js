@@ -38,12 +38,16 @@ import { useForm } from "@mantine/form";
 import { useMdScreen, useSmScreen } from "../context/mediaQueryContext";
 import { collection, getDocs } from "firebase/firestore";
 import { useFirestore } from "../context/firebaseContext";
+import { useMediaQuery } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
     [theme.fn.smallerThan("xl")]: {
       flexDirection: "column",
       gap: 80,
+    },
+    [theme.fn.smallerThan("md")]: {
+      gap: 40,
     },
     [theme.fn.smallerThan("sm")]: {
       gap: 20,
@@ -53,8 +57,6 @@ const useStyles = createStyles((theme) => ({
     width: "59%",
     [theme.fn.smallerThan("xl")]: {
       width: "100%",
-    },
-    [theme.fn.smallerThan("sm")]: {
       order: 2,
     },
   },
@@ -62,8 +64,6 @@ const useStyles = createStyles((theme) => ({
     width: "39%",
     [theme.fn.smallerThan("xl")]: {
       width: "100%",
-    },
-    [theme.fn.smallerThan("sm")]: {
       order: 1,
     },
   },
@@ -121,9 +121,14 @@ const useStyles = createStyles((theme) => ({
     color: theme.colors.primary[3],
     fontSize: 10,
     marginTop: 3,
-    [theme.fn.smallerThan("sm")]: {
+    [theme.fn.smallerThan(1200)]: {
+      fontSize: 16,
+    },
+    [theme.fn.smallerThan("md")]: {
+      fontSize: 13,
       marginTop: 0,
     },
+    [theme.fn.smallerThan("sm")]: { fontSize: 11 },
   },
   previewText: {
     color: theme.colors.gray[7],
@@ -212,7 +217,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
       });
     }
     getAvailableColors();
-  }, [firestore]);
+  }, []);
 
   const [selectedMaterial, setSelectedMaterial] = useState("Beste Option");
   const [materialColors, setMaterialColors] = useState([]);
@@ -233,16 +238,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
   });
 
   function STLModel(
-    {
-      url,
-      initialRotationX,
-      initialRotationY,
-      initialRotationZ,
-      position,
-      rotateX,
-      rotateZ,
-      rotateY,
-    },
+    { url, initialRotationX, initialRotationY, initialRotationZ, position },
     props
   ) {
     // This reference will give us direct access to the mesh
@@ -298,10 +294,6 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
       if (initialRotationX) mesh.current.rotation.x = initialRotationX;
       if (initialRotationY) mesh.current.rotation.y = initialRotationY;
       if (initialRotationZ) mesh.current.rotation.z = initialRotationZ;
-
-      if (rotateX) mesh.current.rotation.x += 0.005;
-      if (rotateY) mesh.current.rotation.y += 0.005;
-      if (rotateZ) mesh.current.rotation.z += 0.005;
     });
     // Return view, these are regular three.js elements expressed in JSX
     return (
@@ -407,6 +399,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
 
   const mdScreen = useMdScreen();
   const smScreen = useSmScreen();
+  const largeScreen = useMediaQuery("(min-width: 1199px)");
 
   return (
     <Group className={classes.wrapper} align="start" position={"apart"}>
@@ -661,7 +654,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
         </Group>
         <div className={classes.previewWrapper}>
           <div className={classes.previewExplanationWrapper}>
-            {smScreen ? (
+            {largeScreen ? (
               <>
                 <Text className={classes.previewActionText}>
                   LINKS KLICKEN:{" "}
@@ -686,7 +679,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
                 <Box
                   sx={{
                     fontWeight: 500,
-                    [theme.fn.smallerThan("sm")]: { fontSize: 11 },
+                    [theme.fn.smallerThan("xl")]: { fontSize: 11 },
                   }}
                 >
                   x
@@ -698,7 +691,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
                 <Box
                   sx={{
                     fontWeight: 500,
-                    [theme.fn.smallerThan("sm")]: { fontSize: 11 },
+                    [theme.fn.smallerThan("xl")]: { fontSize: 11 },
                   }}
                 >
                   x
@@ -744,7 +737,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
           spacing={6}
           mt={10}
           sx={(theme) => ({
-            [theme.fn.smallerThan("sm")]: { display: "none" },
+            [theme.fn.smallerThan("xl")]: { display: "none" },
           })}
         >
           <DimensionDisplay
