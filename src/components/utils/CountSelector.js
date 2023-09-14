@@ -1,9 +1,8 @@
-import { useState, useRef, forwardRef } from "react";
+import { useState } from "react";
 import {
   NumberInput,
   Group,
   ActionIcon,
-  NumberInputHandlers,
   createStyles,
   useMantineTheme,
 } from "@mantine/core";
@@ -39,7 +38,7 @@ export default function CountSelector({ count, id }) {
     <Group spacing={smScreen ? 5 : 0} noWrap className={classes.container}>
       <ActionIcon
         size={18}
-        variant='subtle'
+        variant="subtle"
         onClick={() => {
           setValue((prev) => (prev > 1 ? prev - 1 : prev));
           const updatedCart = shoppingCart.map((item) => {
@@ -80,7 +79,7 @@ export default function CountSelector({ count, id }) {
 
       <ActionIcon
         size={18}
-        variant='subtle'
+        variant="subtle"
         onClick={() => {
           setValue((prev) => (prev < 10 ? prev + 1 : prev));
           const updatedCart = shoppingCart.map((item) => {

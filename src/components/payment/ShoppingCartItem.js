@@ -1,23 +1,7 @@
-import {
-  Badge,
-  Container,
-  Image,
-  Group,
-  Text,
-  Stack,
-  createStyles,
-  useMantineTheme,
-  ActionIcon,
-} from "@mantine/core";
+import { Badge, Image, Group, Text, Stack, createStyles } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
-import { IconX } from "@tabler/icons";
 import React from "react";
-import { useConfiguratorItem } from "../context/configuratorContext";
 import { useXlScreen } from "../context/mediaQueryContext";
-import {
-  useShoppingCart,
-  useUpdateShoppingCart,
-} from "../context/shoppingCartContext";
 
 const materialMap = {
   pla: "Kunststoff",
@@ -42,9 +26,6 @@ export default function ShoppingCartItem({
   id,
 }) {
   const { hovered, ref } = useHover();
-  const theme = useMantineTheme();
-  const updateShoppingCart = useUpdateShoppingCart();
-  const shoppingCart = useShoppingCart();
   const xlScreen = useXlScreen();
 
   const useStyles = createStyles((theme) => ({
@@ -130,12 +111,8 @@ export default function ShoppingCartItem({
   }));
   const { classes } = useStyles();
 
-  function removeItemFromShoppingCart(id) {
-    updateShoppingCart(shoppingCart.filter((item) => item.objectID !== id));
-  }
-
   return (
-    <Group noWrap position='apart' className={classes.container} ref={ref}>
+    <Group noWrap position="apart" className={classes.container} ref={ref}>
       {/* <ActionIcon className={classes.removeButton} size={"sm"}>
         <IconX
           size={12}
@@ -149,7 +126,7 @@ export default function ShoppingCartItem({
       <Group noWrap spacing={20}>
         <div className={classes.imageContainer}>
           <Image src={imageSrc} width={48} height={48} />
-          <Badge variant='outline' className={classes.badge}>
+          <Badge variant="outline" className={classes.badge}>
             {count}
           </Badge>
         </div>

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "@mantine/core";
 import { motion } from "framer-motion";
-import { useMdScreen, useXsScreen } from "../context/mediaQueryContext";
+import { useMdScreen } from "../context/mediaQueryContext";
 import { Link } from "react-router-dom";
 
 export default function ArrowButton({ text, destination }) {
   const [hover, setHover] = useState(false);
   const mdScreen = useMdScreen();
-  const xsScreen = useXsScreen();
 
   const viewBoxVariants = {
     initial: {

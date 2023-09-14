@@ -1,4 +1,4 @@
-import { Button, ThemeIcon, useMantineTheme } from "@mantine/core";
+import { Button, useMantineTheme } from "@mantine/core";
 import { IconTrash } from "@tabler/icons";
 import React from "react";
 import { useSmScreen } from "../context/mediaQueryContext";
@@ -15,7 +15,7 @@ export default function RemoveButton({ id }) {
 
   return (
     <Button
-      variant='subtle'
+      variant="subtle"
       leftIcon={<IconTrash size={smScreen ? 22 : 19} />}
       color={theme.colors.primary[3]}
       size={"sm"}

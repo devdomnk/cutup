@@ -1,5 +1,5 @@
 import { createStyles, Container } from "@mantine/core";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import ConfigurationStepper from "../components/configurator/ConfigurationStepper";
 import { motion } from "framer-motion";
 

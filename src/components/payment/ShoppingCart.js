@@ -15,36 +15,13 @@ import ShoppingCartItem from "./ShoppingCartItem";
 import { useShoppingCart } from "../context/shoppingCartContext";
 import { useFirestore, useUser } from "../context/firebaseContext";
 import { addDoc, collection, doc, onSnapshot } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import { useSmScreen } from "../context/mediaQueryContext";
-
-const items = [
-  {
-    name: "furcheinflößender Geist",
-    price: 13.8,
-    color: "Purpur",
-    material: "PLA",
-    detail: "Detailliert",
-    image: "ghost.png",
-    count: 1,
-  },
-  {
-    name: "furcheinflößender Geist",
-    price: 13.8,
-    color: "Purpur",
-    material: "PLA",
-    detail: "Detailliert",
-    image: "ghost.png",
-    count: 1,
-  },
-];
 
 export default function ShoppingCart() {
   const theme = useMantineTheme();
   const shoppingCart = useShoppingCart();
   const firestore = useFirestore();
   const user = useUser();
-  const navigate = useNavigate();
   const [fullPrice, setFullPrice] = useState(
     shoppingCart.reduce((prev, curr) => prev + curr.price * curr.count, 0)
   );
@@ -53,10 +30,10 @@ export default function ShoppingCart() {
 
   const useStyles = createStyles((theme) => ({
     container: {
-      position: "-webkit-sticky",
       position: "sticky",
       top: 120,
       marginBottom: 90,
+      alignSelf: "flex-start",
 
       [theme.fn.smallerThan(1250)]: {
         position: "unset",
@@ -125,11 +102,11 @@ export default function ShoppingCart() {
   }, [setFullPrice, shoppingCart]);
 
   async function createPayment() {
-    const shoppingCartMetadata = shoppingCart.forEach((item, index) => {
+    /* const shoppingCartMetadata = shoppingCart.forEach((item, index) => {
       return {
         [`color${index++}`]: item.color.name,
       };
-    });
+    }); */
 
     const docRef = collection(
       firestore,

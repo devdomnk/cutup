@@ -238,7 +238,16 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
   });
 
   function STLModel(
-    { url, initialRotationX, initialRotationY, initialRotationZ, position },
+    {
+      url,
+      initialRotationX,
+      initialRotationY,
+      initialRotationZ,
+      position,
+      rotateX,
+      rotateZ,
+      rotateY,
+    },
     props
   ) {
     // This reference will give us direct access to the mesh
@@ -294,6 +303,10 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
       if (initialRotationX) mesh.current.rotation.x = initialRotationX;
       if (initialRotationY) mesh.current.rotation.y = initialRotationY;
       if (initialRotationZ) mesh.current.rotation.z = initialRotationZ;
+
+      if (rotateX) mesh.current.rotation.x += 0.001;
+      if (rotateY) mesh.current.rotation.y += 0.001;
+      if (rotateZ) mesh.current.rotation.z += 0.001;
     });
     // Return view, these are regular three.js elements expressed in JSX
     return (
@@ -349,7 +362,7 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
     setMaterialColors(filteredColors);
 
     form.setFieldValue("color", "#A3A3A3");
-  }, [selectedMaterial, availableColors, form]);
+  }, [selectedMaterial, availableColors]);
 
   function storeObject() {
     setObjectData((prev) => ({
