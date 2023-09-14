@@ -111,6 +111,45 @@ export default function ShoppingCartItem({
   }));
   const { classes } = useStyles();
 
+  const ItemMap = {
+    "3DBenchy": "/Benchy.png",
+    Zahnpastaquetscher: "/ToothPasteSqueezer.png",
+  };
+
+  const ColorRotationMap = {
+    Glutorange: 105,
+    Gold: 125,
+    Graphitgrau: 0,
+    Kirschrot: 80,
+    Mattschwarz: 0,
+    Minzgrün: 210,
+    Polarlichter: 290,
+    "Rauchiges Schwarz": 0,
+    "Transluzent Grün": 170,
+    Weiß: 0,
+  };
+
+  const ColorSaturationMap = {
+    Graphitgrau: 0.2,
+    Mattschwarz: 0,
+    "Rauchiges Schwarz": 0.3,
+    Weiß: 2,
+  };
+
+  function getItemColorFilter(selectedColor) {
+    if (!selectedColor) return;
+
+    if (selectedColor === "Weiß") {
+      return `brightness(4)  grayscale(1) `;
+    }
+
+    if (ColorRotationMap[selectedColor] === 0) {
+      return `saturate(${ColorSaturationMap[selectedColor] * 100}%)`;
+    }
+
+    return `hue-rotate(${ColorRotationMap[selectedColor]}deg)`;
+  }
+
   return (
     <Group noWrap position="apart" className={classes.container} ref={ref}>
       {/* <ActionIcon className={classes.removeButton} size={"sm"}>
@@ -125,7 +164,14 @@ export default function ShoppingCartItem({
       </ActionIcon> */}
       <Group noWrap spacing={20}>
         <div className={classes.imageContainer}>
-          <Image src={imageSrc} width={48} height={48} />
+          <Image
+            src={ItemMap[name]}
+            sx={{
+              filter: getItemColorFilter(color),
+              maxWidth: 48,
+              maxHeight: 48,
+            }}
+          />
           <Badge variant="outline" className={classes.badge}>
             {count}
           </Badge>

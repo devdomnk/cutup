@@ -89,10 +89,10 @@ export default function ItemDisplay({ availableColors }) {
         styles={{ root: { position: "relative" } }}
       />
       <Stack spacing={10}>
-        {shoppingCart.map((item) => (
+        {shoppingCart.map((item, index) => (
           <>
             <ItemDisplayArticle
-              key={item.objectID}
+              key={index}
               name={item.fileName}
               price={item.price}
               color={item.color.hex}

@@ -1,4 +1,4 @@
-import { createStyles, Group, Stack, Text, Title } from "@mantine/core";
+import { createStyles, Group, Stack, Text, Title, Image } from "@mantine/core";
 import React, { useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
@@ -29,7 +29,6 @@ const useStyles = createStyles((theme) => ({
   },
   cardImage: {
     margin: "20px auto 30px",
-    width: 150,
     [theme.fn.smallerThan("lg")]: {
       margin: "10px auto 30px",
     },
@@ -147,11 +146,58 @@ export default function SummaryCard({
 
   const smScreen = useSmScreen();
 
+  const ItemMap = {
+    "3DBenchy": "/Benchy.png",
+    Zahnpastaquetscher: "/ToothPasteSqueezer.png",
+  };
+
+  const ColorRotationMap = {
+    Glutorange: 105,
+    Gold: 125,
+    Graphitgrau: 0,
+    Kirschrot: 80,
+    Mattschwarz: 0,
+    Minzgrün: 210,
+    Polarlichter: 290,
+    "Rauchiges Schwarz": 0,
+    "Transluzent Grün": 170,
+    Weiß: 0,
+  };
+
+  const ColorSaturationMap = {
+    Graphitgrau: 0.2,
+    Mattschwarz: 0,
+    "Rauchiges Schwarz": 0.3,
+    Weiß: 2,
+  };
+
+  function getItemColorFilter(selectedColor) {
+    if (!selectedColor) return;
+
+    if (selectedColor === "Weiß") {
+      return `brightness(4)  grayscale(1) `;
+    }
+
+    if (ColorRotationMap[selectedColor] === 0) {
+      return `saturate(${ColorSaturationMap[selectedColor] * 100}%)`;
+    }
+
+    return `hue-rotate(${ColorRotationMap[selectedColor]}deg)`;
+  }
+
   return (
     <Stack className={classes.cardWrapper} spacing={4}>
       <Title className={classes.fileName}>{name}</Title>
       <div className={classes.cardImage}>
-        <Canvas
+        <Image
+          src={ItemMap[name]}
+          sx={{
+            maxWidth: smScreen ? 150 : 110,
+            maxHeight: smScreen ? 150 : 110,
+            filter: getItemColorFilter(color.name),
+          }}
+        />
+        {/* <Canvas
           camera={{ position: [100, 40, 100], fov: 25 }}
           gl={{ preserveDrawingBuffer: true }}
         >
@@ -164,7 +210,7 @@ export default function SummaryCard({
               position={[0, -20, 0]}
             />
           )}
-        </Canvas>
+        </Canvas> */}
       </div>
       <Group position={"apart"}>
         <Text className={classes.propertyDescription}>Material</Text>

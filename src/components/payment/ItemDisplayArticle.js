@@ -38,6 +38,9 @@ const useStyles = createStyles((theme) => ({
       borderRadius: 8,
       backgroundColor: theme.white,
     },
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   itemName: {
     fontSize: 20,
@@ -116,11 +119,60 @@ export default function ItemDisplayArticle({
     setSelectedColor(selectedColor);
   }, [availableColors]);
 
+  const ItemMap = {
+    "3DBenchy": "/Benchy.png",
+    Zahnpastaquetscher: "/ToothPasteSqueezer.png",
+  };
+
+  const ColorRotationMap = {
+    Glutorange: 105,
+    Gold: 125,
+    Graphitgrau: 0,
+    Kirschrot: 80,
+    Mattschwarz: 0,
+    Minzgrün: 210,
+    Polarlichter: 290,
+    "Rauchiges Schwarz": 0,
+    "Transluzent Grün": 170,
+    Weiß: 0,
+  };
+
+  const ColorSaturationMap = {
+    Graphitgrau: 0.2,
+    Mattschwarz: 0,
+    "Rauchiges Schwarz": 0.3,
+    Weiß: 2,
+  };
+
+  function getItemColorFilter(selectedColor) {
+    if (!selectedColor) return;
+
+    const colorObject = availableColors.find(
+      (colorObject) => colorObject.value === selectedColor
+    );
+
+    if (colorObject?.label === "Weiß") {
+      return `brightness(4)  grayscale(1) `;
+    }
+
+    if (ColorRotationMap[colorObject?.label] === 0) {
+      return `saturate(${ColorSaturationMap[colorObject?.label] * 100}%)`;
+    }
+
+    return `hue-rotate(${ColorRotationMap[colorObject?.label]}deg)`;
+  }
+
   return (
     <Group noWrap position="apart" className={classes.container}>
       <Group noWrap spacing={smScreen ? 36 : 18}>
         <div className={classes.displayImage}>
-          <Image src={imageSrc} />
+          <Image
+            src={ItemMap[name]}
+            sx={{
+              maxWidth: smScreen ? 110 : 65,
+              filter: getItemColorFilter(selectedColor),
+            }}
+          />
         </div>
         <Group noWrap position={"apart"}>
           <Stack spacing={smScreen ? 45 : 25}>
@@ -231,8 +283,22 @@ export default function ItemDisplayArticle({
                       radius={8}
                       value={selectedColor}
                       onChange={(curr) => {
-                        console.log(curr);
                         setSelectedColor(curr);
+                        const newCart = shoppingCart.map((item) => {
+                          if (item.objectID === id) {
+                            const colorObject = availableColors.find(
+                              (colorObject) => colorObject.value === curr
+                            );
+                            return {
+                              ...item,
+                              color: {
+                                hex: colorObject.value,
+                                name: colorObject.label,
+                              },
+                            };
+                          } else return item;
+                        });
+                        updateShoppingCart(newCart);
                       }}
                       size={"xs"}
                     />
@@ -348,8 +414,22 @@ export default function ItemDisplayArticle({
               radius={8}
               value={selectedColor}
               onChange={(curr) => {
-                console.log(curr);
                 setSelectedColor(curr);
+                const newCart = shoppingCart.map((item) => {
+                  if (item.objectID === id) {
+                    const colorObject = availableColors.find(
+                      (colorObject) => colorObject.value === curr
+                    );
+                    return {
+                      ...item,
+                      color: {
+                        hex: colorObject.value,
+                        name: colorObject.label,
+                      },
+                    };
+                  } else return item;
+                });
+                updateShoppingCart(newCart);
               }}
               size={"xs"}
               styles={{
