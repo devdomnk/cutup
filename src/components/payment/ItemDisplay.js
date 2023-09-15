@@ -18,6 +18,14 @@ const useStyles = createStyles((theme) => ({
   container: {
     width: 850,
     position: "relative",
+    marginLeft: 0,
+    marginRight: 0,
+
+    [theme.fn.smallerThan(1250)]: {
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+
     [theme.fn.largerThan(1250)]: {
       minHeight: 384,
     },

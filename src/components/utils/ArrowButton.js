@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useMdScreen } from "../context/mediaQueryContext";
 import { Link } from "react-router-dom";
 
-export default function ArrowButton({ text, destination }) {
+export default function ArrowButton({ text, destination, isSmall }) {
   const [hover, setHover] = useState(false);
   const mdScreen = useMdScreen();
 
@@ -40,7 +40,7 @@ export default function ArrowButton({ text, destination }) {
   return (
     <Link to={destination}>
       <Button
-        size={mdScreen ? "md" : "sm"}
+        size={mdScreen ? (isSmall ? "sm" : "md") : "sm"}
         variant="filled"
         radius={30}
         onClick={() => {}}
@@ -52,7 +52,7 @@ export default function ArrowButton({ text, destination }) {
         }}
         rightIcon={
           <motion.svg
-            height={mdScreen ? "30" : "24"}
+            height={mdScreen ? (isSmall ? "24 " : "30") : "24"}
             fill="none"
             animate={hover ? "hovered" : "initial"}
             variants={viewBoxVariants}
@@ -93,10 +93,10 @@ export default function ArrowButton({ text, destination }) {
         }
         styles={(theme) => ({
           root: {
-            width: 200,
-            padding: "3px 7px 3px 24px",
+            width: isSmall ? 172 : 200,
+            padding: isSmall ? "3px 7px 3px 18px" : "3px 7px 3px 24px",
             fontWeight: 500,
-            fontSize: 15,
+            fontSize: isSmall ? 14 : 15,
             display: "flex",
             justifyContent: "space-between",
             "&:hover": {
@@ -112,7 +112,7 @@ export default function ArrowButton({ text, destination }) {
             },
           },
           rightIcon: {
-            marginLeft: hover ? 14 : 24,
+            marginLeft: hover ? (isSmall ? 9 : 14) : isSmall ? 16 : 24,
             transition: "all .15s ease-out",
             [theme.fn.smallerThan("xs")]: {
               marginLeft: hover ? 5 : 15,

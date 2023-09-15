@@ -214,7 +214,11 @@ export default function ItemDisplayArticle({
                   setSelectedMaterial(curr);
                   const updatedCart = shoppingCart.map((item) => {
                     if (item.objectID === id) {
-                      return { ...item, material: curr };
+                      return {
+                        ...item,
+                        material: curr,
+                        color: { hex: "#eeeeee", name: "Wähle deine Option" },
+                      };
                     } else return item;
                   });
                   updateShoppingCart(updatedCart);
@@ -270,7 +274,14 @@ export default function ItemDisplayArticle({
                         setSelectedMaterial(curr);
                         const updatedCart = shoppingCart.map((item) => {
                           if (item.objectID === id) {
-                            return { ...item, material: curr };
+                            return {
+                              ...item,
+                              material: curr,
+                              color: {
+                                hex: "#eeeeee",
+                                name: "Wähle deine Option",
+                              },
+                            };
                           } else return item;
                         });
                         updateShoppingCart(updatedCart);

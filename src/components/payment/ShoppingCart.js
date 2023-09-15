@@ -34,10 +34,14 @@ export default function ShoppingCart() {
       top: 120,
       marginBottom: 90,
       alignSelf: "flex-start",
+      marginLeft: 0,
+      marginRight: 0,
 
       [theme.fn.smallerThan(1250)]: {
         position: "unset",
         width: 850,
+        marginLeft: "auto",
+        marginRight: "auto",
       },
 
       [theme.fn.largerThan("sm")]: {
