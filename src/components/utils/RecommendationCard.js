@@ -2,9 +2,7 @@ import {
   Group,
   Title,
   Stack,
-  Image,
   Text,
-  Center,
   useMantineTheme,
   createStyles,
 } from "@mantine/core";
@@ -14,7 +12,7 @@ import { useSmScreen } from "../context/mediaQueryContext";
 import { useSetConfiguratorItem } from "../context/configuratorContext";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import { useHover } from "@mantine/hooks";
 
