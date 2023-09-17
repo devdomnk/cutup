@@ -36,7 +36,7 @@ const useStyles = createStyles((theme) => ({
     },
     [theme.fn.smallerThan("sm")]: {
       marginTop: 130,
-      marginBottom: 60,
+      marginBottom: 40,
       paddingTop: 10,
     },
   },
@@ -51,9 +51,9 @@ const useStyles = createStyles((theme) => ({
   },
   mobileBackground: {
     position: "absolute",
-    width: "100vw",
-    height: "1000px",
-    top: -130,
+    width: "300vw",
+    height: "3000px",
+    top: -175,
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 0,
@@ -100,7 +100,7 @@ export default function ItemDisplay({ availableColors }) {
         {shoppingCart.map((item, index) => (
           <>
             <ItemDisplayArticle
-              key={index}
+              key={item.objectID}
               name={item.fileName}
               price={item.price}
               color={item.color.hex}

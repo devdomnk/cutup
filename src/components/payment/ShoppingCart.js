@@ -56,6 +56,9 @@ export default function ShoppingCart() {
       overflowY: shoppingCart.length > 5 ? "scroll" : "hidden",
       overflowX: "hidden",
       boxSizing: "content-box",
+      [theme.fn.smallerThan("sm")]: {
+        maxHeight: "unset",
+      },
     },
     sectionHeading: {
       marginTop: 6,

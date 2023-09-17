@@ -152,7 +152,7 @@ export function CarouselCard({
 
       <Group position="apart" mt="lg">
         {name ? (
-          <SkeletonFadeWrapper>
+          <SkeletonFadeWrapper delay={0.1}>
             <Text weight={500} size={smScreen ? "lg" : "md"}>
               {name}
             </Text>
