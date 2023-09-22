@@ -6,6 +6,7 @@ import { getDownloadURL } from "firebase/storage";
 import { useConfiguratorItem } from "../context/configuratorContext";
 import { useSmScreen } from "../context/mediaQueryContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { v4 as uuidv4 } from "uuid";
 
 const useStyles = createStyles((theme) => ({
   cardWrapper: {
@@ -185,44 +186,48 @@ export default function SummaryCard({
     <Stack className={classes.cardWrapper} spacing={4}>
       <Title className={classes.fileName}>{name}</Title>
       <div className={classes.cardImage}>
-        {custom ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{ filter: getItemColorFilter(color.name) }}
-          >
-            <Canvas
-              camera={{ position: [100, 40, 100], fov: 25 }}
-              gl={{ preserveDrawingBuffer: true }}
+        <AnimatePresence mode="wait">
+          {custom ? (
+            <motion.div
+              key={"dwano-adwa3"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ filter: getItemColorFilter(color.name) }}
             >
-              <ambientLight />
-              <pointLight position={[100, 100, 100]} />
-              {stlUrl && (
-                <STLModel
-                  url={stlUrl}
-                  initialRotationX={Math.PI * 1.5}
-                  position={[0, -20, 0]}
-                />
-              )}
-            </Canvas>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <Image
-              src={configuratorItem.image}
-              sx={{
-                maxWidth: smScreen ? 150 : 110,
-                maxHeight: smScreen ? 150 : 110,
-                filter: getItemColorFilter(color.name),
-              }}
-            />
-          </motion.div>
-        )}
+              <Canvas
+                camera={{ position: [100, 40, 100], fov: 25 }}
+                gl={{ preserveDrawingBuffer: true }}
+              >
+                <ambientLight />
+                <pointLight position={[100, 100, 100]} />
+                {stlUrl && (
+                  <STLModel
+                    url={stlUrl}
+                    initialRotationX={Math.PI * 1.5}
+                    position={[0, -20, 0]}
+                  />
+                )}
+              </Canvas>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={"ztelw-dnwo9"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <Image
+                src={configuratorItem.image}
+                sx={{
+                  maxWidth: smScreen ? 150 : 110,
+                  maxHeight: smScreen ? 150 : 110,
+                  filter: getItemColorFilter(color.name),
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <Group position={"apart"}>
         <Text className={classes.propertyDescription}>Material</Text>

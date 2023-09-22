@@ -127,7 +127,6 @@ export default function ShoppingCart() {
       collect_shipping_address: true,
       allow_promotion_codes: true,
       line_items: shoppingCart.map((item) => {
-        /* if (item.custom) { */
         return {
           price_data: {
             unit_amount: item.price * 100,
@@ -135,7 +134,7 @@ export default function ShoppingCart() {
             tax_behavior: "inclusive",
             product_data: {
               name: item.fileName,
-              /* images: [item.image], */
+              images: [item.image],
               metadata: {
                 color: item.color.name,
                 hex: item.color.hex,
@@ -156,19 +155,7 @@ export default function ShoppingCart() {
             maximum: 10,
           },
           quantity: item.count,
-          /* tax_rates: ["txr_1M32MYDGH7OzcNzcMPPSEfAZ"], */
         };
-        /*} else {
-          return {
-            price: item.priceID,
-            adjustable_quantity: {
-              enabled: true,
-              minimum: 1,
-              maximum: 10,
-            },
-            quantity: item.count,
-          };
-        } */
       }),
 
       mode: "payment",

@@ -79,14 +79,12 @@ const useStyles = createStyles((theme) => ({
 export default function OrderSummary({ objectData, nextStep }) {
   const { classes } = useStyles();
   const updateShoppingCart = useUpdateShoppingCart();
+  const shoppingCart = useShoppingCart();
   const [objectImage, setObjectImage] = useState();
-  const SetConfiguratorItem = useSetConfiguratorItem();
   const configuratorItem = useConfiguratorItem();
   const navigate = useNavigate();
 
   function addObjectToShoppingCart() {
-    setObjectImage();
-    console.log(configuratorItem);
     updateShoppingCart((prev) => [
       ...prev,
       {
@@ -113,14 +111,77 @@ export default function OrderSummary({ objectData, nextStep }) {
         count: 1,
       },
     ]);
-    SetConfiguratorItem();
   }
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  const shoppingCart = useShoppingCart();
   const firestore = useFirestore();
   const user = useUser();
+
   async function createPayment() {
+    let line_items = shoppingCart.map((item) => {
+      return {
+        price_data: {
+          unit_amount: item.price * 100,
+          currency: "eur",
+          tax_behavior: "inclusive",
+          product_data: {
+            name: item.fileName,
+            images: [item.image],
+            metadata: {
+              color: item.color.name,
+              hex: item.color.hex,
+              density: item.density,
+              resolution: item.resolution,
+              material: item.material,
+              scale: item.scale,
+              measurementX: item.measurements.x,
+              measurementY: item.measurements.y,
+              measurementZ: item.measurements.z,
+              ref: item.storageref._location.path,
+            },
+          },
+        },
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 10,
+        },
+        quantity: item.count,
+      };
+    });
+
+    line_items.push({
+      price_data: {
+        unit_amount: objectData.price * 100,
+        currency: "eur",
+        tax_behavior: "inclusive",
+        product_data: {
+          name: objectData.fileName,
+          images: [configuratorItem?.image || objectImage],
+          metadata: {
+            color: objectData.color.name,
+            hex: objectData.color.hex,
+            density: objectData.density,
+            resolution: objectData.resolution,
+            material: objectData.material,
+            scale: objectData.scale,
+            measurementX: objectData.measurements.x,
+            measurementY: objectData.measurements.y,
+            measurementZ: objectData.measurements.z,
+            ref: objectData.storageref._location.path,
+          },
+        },
+      },
+      adjustable_quantity: {
+        enabled: true,
+        minimum: 1,
+        maximum: 10,
+      },
+      quantity: 1,
+    });
+
+    console.log(line_items);
+
     const docRef = collection(
       firestore,
       "customers",
@@ -132,42 +193,14 @@ export default function OrderSummary({ objectData, nextStep }) {
       tax_id_collection: false,
       collect_shipping_address: true,
       allow_promotion_codes: true,
-      line_items: [
-        {
-          price_data: {
-            unit_amount: objectData.price * 100,
-            currency: "eur",
-            tax_behavior: "inclusive",
-            product_data: {
-              name: objectData.fileName,
-              /* images: [item.image], */
-              metadata: {
-                color: objectData.color.name,
-                hex: objectData.color.hex,
-                density: objectData.density,
-                resolution: objectData.resolution,
-                material: objectData.material,
-                scale: objectData.scale,
-                measurementX: objectData.measurements.x,
-                measurementY: objectData.measurements.y,
-                measurementZ: objectData.measurements.z,
-                ref: objectData.storageref._location.path_,
-              },
-            },
-          },
-          adjustable_quantity: {
-            enabled: true,
-            minimum: 1,
-            maximum: 10,
-          },
-          quantity: objectData.count,
-        },
-      ],
+      line_items: line_items,
+      mode: "payment",
+      payment_method_types: ["sofort", "card", "sepa_debit"],
       success_url: window.location.origin,
       cancel_url: window.location.origin,
-      mode: "payment",
-      metadata: { uid: user.uid },
-      payment_method_types: ["sofort", "card", "sepa_debit"],
+      metadata: {
+        uid: user.uid,
+      },
     }).then((res) => {
       onSnapshot(doc(firestore, res.path), (doc) => {
         if (doc.data().error?.message) alert(doc.data().error.message);
@@ -209,6 +242,7 @@ export default function OrderSummary({ objectData, nextStep }) {
             radius={8}
             onClick={() => {
               setIsButtonLoading(true);
+              addObjectToShoppingCart();
               createPayment();
             }}
             sx={(theme) => ({
@@ -264,21 +298,20 @@ export default function OrderSummary({ objectData, nextStep }) {
         >
           <path d="M359 0L0 24.6667V555H359V0Z" fill="white" />
         </svg>
-        <AnimatePresence mode="wait">
-          <SummaryCard
-            material={objectData.material}
-            color={objectData.color}
-            resolution={objectData.resolution}
-            density={objectData.density}
-            measurements={objectData.measurements}
-            scale={objectData.scale}
-            storageref={objectData.storageref}
-            name={objectData.fileName}
-            custom={!configuratorItem}
-            objectImage={objectImage}
-            setObjectImage={setObjectImage}
-          />
-        </AnimatePresence>
+
+        <SummaryCard
+          material={objectData.material}
+          color={objectData.color}
+          resolution={objectData.resolution}
+          density={objectData.density}
+          measurements={objectData.measurements}
+          scale={objectData.scale}
+          storageref={objectData.storageref}
+          name={objectData.fileName}
+          custom={!configuratorItem}
+          objectImage={objectImage}
+          setObjectImage={setObjectImage}
+        />
       </Stack>
     </Container>
   );
