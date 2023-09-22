@@ -3,10 +3,9 @@ import React, { useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import { getDownloadURL } from "firebase/storage";
-import { useStorage } from "../context/firebaseContext";
 import { useConfiguratorItem } from "../context/configuratorContext";
-import { ref } from "firebase/storage";
 import { useSmScreen } from "../context/mediaQueryContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 const useStyles = createStyles((theme) => ({
   cardWrapper: {
@@ -101,8 +100,10 @@ export default function SummaryCard({
   storageref,
   name,
   setObjectImage,
+  custom,
 }) {
   const { classes } = useStyles();
+  const configuratorItem = useConfiguratorItem();
 
   function STLModel(
     { url, initialRotationX, initialRotationY, initialRotationZ, position },
@@ -128,7 +129,7 @@ export default function SummaryCard({
     return (
       <mesh {...props} position={position} ref={mesh} geometry={geom}>
         {/* <boxGeometry args={[2, 2, 2]} /> */}
-        <meshStandardMaterial color={color.hex} />
+        <meshStandardMaterial color={0x6723f5} />
       </mesh>
     );
   }
@@ -145,11 +146,6 @@ export default function SummaryCard({
   getSTLFile();
 
   const smScreen = useSmScreen();
-
-  const ItemMap = {
-    "3DBenchy": "/Benchy.png",
-    Zahnpastaquetscher: "/ToothPasteSqueezer.png",
-  };
 
   const ColorRotationMap = {
     Glutorange: 105,
@@ -189,28 +185,44 @@ export default function SummaryCard({
     <Stack className={classes.cardWrapper} spacing={4}>
       <Title className={classes.fileName}>{name}</Title>
       <div className={classes.cardImage}>
-        <Image
-          src={ItemMap[name]}
-          sx={{
-            maxWidth: smScreen ? 150 : 110,
-            maxHeight: smScreen ? 150 : 110,
-            filter: getItemColorFilter(color.name),
-          }}
-        />
-        {/* <Canvas
-          camera={{ position: [100, 40, 100], fov: 25 }}
-          gl={{ preserveDrawingBuffer: true }}
-        >
-          <ambientLight />
-          <pointLight position={[100, 100, 100]} />
-          {stlUrl && (
-            <STLModel
-              url={stlUrl}
-              initialRotationX={Math.PI * 1.5}
-              position={[0, -20, 0]}
+        {custom ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ filter: getItemColorFilter(color.name) }}
+          >
+            <Canvas
+              camera={{ position: [100, 40, 100], fov: 25 }}
+              gl={{ preserveDrawingBuffer: true }}
+            >
+              <ambientLight />
+              <pointLight position={[100, 100, 100]} />
+              {stlUrl && (
+                <STLModel
+                  url={stlUrl}
+                  initialRotationX={Math.PI * 1.5}
+                  position={[0, -20, 0]}
+                />
+              )}
+            </Canvas>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Image
+              src={configuratorItem.image}
+              sx={{
+                maxWidth: smScreen ? 150 : 110,
+                maxHeight: smScreen ? 150 : 110,
+                filter: getItemColorFilter(color.name),
+              }}
             />
-          )}
-        </Canvas> */}
+          </motion.div>
+        )}
       </div>
       <Group position={"apart"}>
         <Text className={classes.propertyDescription}>Material</Text>

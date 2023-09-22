@@ -1,13 +1,11 @@
 import {
   Group,
-  Center,
   Container,
   Stack,
   Title,
   Text,
   Button,
   createStyles,
-  Box,
 } from "@mantine/core";
 import React, { useState } from "react";
 import SummaryCard from "./SummaryCard";
@@ -19,7 +17,6 @@ import {
   useConfiguratorItem,
   useSetConfiguratorItem,
 } from "../context/configuratorContext";
-
 import {
   useLgScreen,
   useMdScreen,
@@ -29,6 +26,7 @@ import {
 import { useFirestore, useUser } from "../context/firebaseContext";
 import { addDoc, collection, doc, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 const useStyles = createStyles((theme) => ({
   heading: {
@@ -87,6 +85,8 @@ export default function OrderSummary({ objectData, nextStep }) {
   const navigate = useNavigate();
 
   function addObjectToShoppingCart() {
+    setObjectImage();
+    console.log(configuratorItem);
     updateShoppingCart((prev) => [
       ...prev,
       {
@@ -107,9 +107,9 @@ export default function OrderSummary({ objectData, nextStep }) {
           y: objectData.measurements.y,
           z: objectData.measurements.z,
         },
-        image: objectImage,
+        image: configuratorItem?.image || objectImage,
         priceID: configuratorItem?.priceID || null,
-        custom: configuratorItem ? false : true,
+        custom: !configuratorItem,
         count: 1,
       },
     ]);
@@ -264,17 +264,21 @@ export default function OrderSummary({ objectData, nextStep }) {
         >
           <path d="M359 0L0 24.6667V555H359V0Z" fill="white" />
         </svg>
-        <SummaryCard
-          material={objectData.material}
-          color={objectData.color}
-          resolution={objectData.resolution}
-          density={objectData.density}
-          measurements={objectData.measurements}
-          scale={objectData.scale}
-          storageref={objectData.storageref}
-          name={objectData.fileName}
-          setObjectImage={setObjectImage}
-        />
+        <AnimatePresence mode="wait">
+          <SummaryCard
+            material={objectData.material}
+            color={objectData.color}
+            resolution={objectData.resolution}
+            density={objectData.density}
+            measurements={objectData.measurements}
+            scale={objectData.scale}
+            storageref={objectData.storageref}
+            name={objectData.fileName}
+            custom={!configuratorItem}
+            objectImage={objectImage}
+            setObjectImage={setObjectImage}
+          />
+        </AnimatePresence>
       </Stack>
     </Container>
   );

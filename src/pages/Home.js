@@ -32,6 +32,19 @@ const productSliderData = [
     imagePrintedLook: "BenchyPrintedLook.png",
     image: "Benchy.png",
     backgroundImage: "BenchyBackground.png",
+    imageFirebaseLink:
+      "https://files.stripe.com/links/MDB8YWNjdF8xTHQ2ZVdER0g3T3pjTnpjfGZsX2xpdmVfWkV6UE9obklGRTIzZktWTG45T1hwcUNB00ueBvmUiU",
+  },
+  {
+    name: "Flexi Einhorn",
+    measurements: "103mm x 79mm x 13mm",
+    weight: 21,
+    price: 8,
+    imagePrintedLook: "UnicornPrintedLook.png",
+    image: "Unicorn.png",
+    backgroundImage: "UnicornBackground.png",
+    imageFirebaseLink:
+      "https://files.stripe.com/links/MDB8YWNjdF8xTHQ2ZVdER0g3T3pjTnpjfGZsX2xpdmVfdHduUFZoZDNwVm5Rajd3c0FlcUxzMnRT00o0gOj5yJ",
   },
   {
     name: "Zahnpastaquetscher",
@@ -41,6 +54,8 @@ const productSliderData = [
     imagePrintedLook: "ToothPasteSqueezerPrintedLook.png",
     image: "ToothPasteSqueezer.png",
     backgroundImage: "ToothPasteSqueezerBackground.png",
+    imageFirebaseLink:
+      "https://files.stripe.com/links/MDB8YWNjdF8xTHQ2ZVdER0g3T3pjTnpjfGZsX2xpdmVfTjNHWlBLQTdPQzNtR0hFZmt0SXgwT29N00Wz5mRP6z",
   },
   {
     name: "3DBenchy",
@@ -50,6 +65,19 @@ const productSliderData = [
     imagePrintedLook: "BenchyPrintedLook.png",
     image: "Benchy.png",
     backgroundImage: "BenchyBackground.png",
+    imageFirebaseLink:
+      "https://files.stripe.com/links/MDB8YWNjdF8xTHQ2ZVdER0g3T3pjTnpjfGZsX2xpdmVfWkV6UE9obklGRTIzZktWTG45T1hwcUNB00ueBvmUiU",
+  },
+  {
+    name: "Flexi Einhorn",
+    measurements: "103mm x 79mm x 13mm",
+    weight: 21,
+    price: 8,
+    imagePrintedLook: "UnicornPrintedLook.png",
+    image: "Unicorn.png",
+    backgroundImage: "UnicornBackground.png",
+    imageFirebaseLink:
+      "https://files.stripe.com/links/MDB8YWNjdF8xTHQ2ZVdER0g3T3pjTnpjfGZsX2xpdmVfdHduUFZoZDNwVm5Rajd3c0FlcUxzMnRT00o0gOj5yJ",
   },
   {
     name: "Zahnpastaquetscher",
@@ -59,6 +87,8 @@ const productSliderData = [
     imagePrintedLook: "ToothPasteSqueezerPrintedLook.png",
     image: "ToothPasteSqueezer.png",
     backgroundImage: "ToothPasteSqueezerBackground.png",
+    imageFirebaseLink:
+      "https://files.stripe.com/links/MDB8YWNjdF8xTHQ2ZVdER0g3T3pjTnpjfGZsX2xpdmVfTjNHWlBLQTdPQzNtR0hFZmt0SXgwT29N00Wz5mRP6z",
   },
 ];
 
@@ -567,6 +597,7 @@ export default function Home({ initialPageDelay }) {
                   SetConfiguratorItem({
                     name: productSliderData[activeSlide]["name"],
                     priceID: "",
+                    image: productSliderData[activeSlide]["imageFirebaseLink"],
                   });
                   navigate("/konfigurator");
                 }}
@@ -726,7 +757,7 @@ export default function Home({ initialPageDelay }) {
                       translate: smScreen
                         ? delayFinished
                           ? "0 0vh"
-                          : "0 -170vh"
+                          : "0 -300vh"
                         : delayFinished
                         ? "0vw 0"
                         : "130vw 0",
@@ -764,6 +795,7 @@ export default function Home({ initialPageDelay }) {
             weight={productSliderData[activeSlide]["weight"]}
             price={productSliderData[activeSlide]["price"]}
             image={productSliderData[activeSlide]["imagePrintedLook"]}
+            imageLink={productSliderData[activeSlide]["imageFirebaseLink"]}
           />
         )}
       </Container>

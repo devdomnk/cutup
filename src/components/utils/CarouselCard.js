@@ -87,7 +87,7 @@ export function CarouselCard({
 
   function openConfigurator() {
     if (!name || !priceID) return;
-    SetConfiguratorItem({ name: name, priceID: priceID });
+    SetConfiguratorItem({ name: name, priceID: priceID, image: images[0] });
     navigate("/konfigurator");
   }
 

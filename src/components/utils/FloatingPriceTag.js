@@ -12,6 +12,7 @@ export default function FloatingPriceTag({
   measurements,
   weight,
   image,
+  imageLink,
   rightOffset,
   priceID,
 }) {
@@ -270,7 +271,7 @@ export default function FloatingPriceTag({
           });
         }}
         onClick={() => {
-          SetConfiguratorItem({ name: name, priceID: "" });
+          SetConfiguratorItem({ name: name, priceID: "", image: imageLink });
           navigate("/konfigurator");
         }}
       >

@@ -56,7 +56,7 @@ export default function RecommendationCard({
 
   function openConfigurator() {
     if (!name || !priceID) return;
-    SetConfiguratorItem({ name: name, priceID: priceID });
+    SetConfiguratorItem({ name: name, priceID: priceID, image: image });
     navigate("/konfigurator");
   }
 

@@ -9,10 +9,10 @@ import {
   Title,
   Divider,
 } from "@mantine/core";
-import ShoppingCart from "../components/payment/ShoppingCart.js";
+import ShoppingCart from "../components/cart/ShoppingCart.js";
 import { useShoppingCart } from "../components/context/shoppingCartContext.js";
-import EmptyCart from "../components/payment/EmptyCart.js";
-import ItemDisplay from "../components/payment/ItemDisplay.js";
+import EmptyCart from "../components/cart/EmptyCart.js";
+import ItemDisplay from "../components/cart/ItemDisplay.js";
 import {
   useMdScreen,
   useSmScreen,
@@ -33,6 +33,7 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { AnimatePresence } from "framer-motion";
+import RecommendedSection from "../components/cart/RecommendedSection.js";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -92,10 +93,8 @@ const useStyles = createStyles((theme) => ({
 
 export default function Warenkorb() {
   const { classes } = useStyles();
-  const theme = useMantineTheme();
   const shoppingCart = useShoppingCart();
   const xlScreen = useXlScreen();
-  const mdScreen = useMdScreen();
   const smScreen = useSmScreen();
   const firestore = useFirestore();
 
@@ -119,71 +118,6 @@ export default function Warenkorb() {
       });
     }
     getAvailableColors();
-  }, [firestore]);
-
-  const [recommendations, setrecommendations] = useState([
-    <RecommendationCard key={uuidv4()} />,
-    <RecommendationCard key={uuidv4()} />,
-
-    <RecommendationCard key={uuidv4()} />,
-    <RecommendationCard key={uuidv4()} />,
-    <RecommendationCard key={uuidv4()} />,
-  ]);
-
-  useLayoutEffect(() => {
-    async function fetchItems() {
-      const ItemCollection = collection(firestore, "products");
-      const productsQuery = query(
-        ItemCollection,
-        where("active", "==", true),
-        limit(5)
-      );
-      const productsRes = await getDocs(productsQuery);
-
-      const prices = [];
-      const pricesSnapshot = await getDocs(
-        query(collectionGroup(firestore, "prices"))
-      );
-      pricesSnapshot.forEach((price) => {
-        prices.push({
-          id: price.id,
-          product: price.data().product,
-          amount: price.data().unit_amount,
-        });
-      });
-
-      const items = [];
-      productsRes.forEach((item) => {
-        items.push({
-          name: item.data().name,
-          description: item.data().description,
-          images: item.data().images,
-          price:
-            prices.find((price) => price.product === item.id)?.amount / 100,
-          priceID: prices.find((price) => price.product === item.id)?.id,
-        });
-      });
-
-      return items;
-    }
-
-    let productCards = [];
-    fetchItems().then((res) => {
-      res.forEach((item) => {
-        productCards = [
-          ...productCards,
-          <RecommendationCard
-            key={uuidv4()}
-            name={item.name}
-            description={item.description}
-            image={item.images[0]}
-            price={item.price}
-            priceID={item.priceID}
-          />,
-        ];
-      });
-      setrecommendations(productCards);
-    });
   }, [firestore]);
 
   return (
@@ -218,69 +152,7 @@ export default function Warenkorb() {
                 </>
               )}
             </Group>
-            <Group
-              noWrap
-              position="apart"
-              spacing={mdScreen ? 10 : 30}
-              align={smScreen ? "start" : "center"}
-              className={classes.recommendedContainer}
-            >
-              {smScreen && (
-                <Stack spacing={14} className={classes.recommendedStack}>
-                  <Text
-                    size={32}
-                    weight={"bold"}
-                    sx={{ lineHeight: 1.295 }}
-                    color={theme.colors.gray[9]}
-                    className={classes.recommendedHeading}
-                  >
-                    Was dir auch gefallen könnte
-                  </Text>
-                  <Text
-                    size={14}
-                    weight={"light"}
-                    mb={33}
-                    color={theme.colors.gray[8]}
-                    className={classes.recommendedText}
-                  >
-                    Wir haben noch viele weitere Modelle im Angebot, hier ist
-                    eine Auswahl unserer beliebtesten Objekte
-                  </Text>
-                  <ArrowButton
-                    text={"weitere Modelle"}
-                    destination={"/produkte"}
-                    isSmall
-                  />
-                </Stack>
-              )}
-              {!smScreen && (
-                <div style={{ width: "100%" }}>
-                  <Group align={"center"} spacing={6}>
-                    <IconGift
-                      color={theme.colors.primary[3]}
-                      style={{ zIndex: 1 }}
-                    />
-                    <Title className={classes.sectionHeading}>
-                      Könnte dir auch gefallen
-                    </Title>
-                  </Group>
-                  <Divider
-                    mt={10}
-                    color={theme.colors.gray[2]}
-                    styles={{ root: { position: "relative" } }}
-                  />
-                </div>
-              )}
-              <Group
-                pt={smScreen ? 0 : 10}
-                px={smScreen ? 0 : 10}
-                position={smScreen ? "right" : "center"}
-                spacing={smScreen ? 36 : 24}
-                sx={{ maxHeight: smScreen ? 310 : 320 /* overflow: "clip" */ }}
-              >
-                <AnimatePresence mode="wait">{recommendations}</AnimatePresence>
-              </Group>
-            </Group>
+            <RecommendedSection />
           </>
         ) : (
           <EmptyCart />
