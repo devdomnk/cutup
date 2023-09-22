@@ -7,9 +7,11 @@ import Produkte from "./pages/Produkte";
 import Hilfe from "./pages/Hilfe";
 import Warenkorb from "./pages/Warenkorb";
 import { AnimatePresence } from "framer-motion";
+import { useSetConfiguratorItem } from "./components/context/configuratorContext";
 
 export default function AnimatedRoutes() {
   const location = useLocation();
+  const setConfiguratorItem = useSetConfiguratorItem();
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -25,6 +27,11 @@ export default function AnimatedRoutes() {
       clearTimeout(timeout);
     };
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === "/konfigurator") return;
+    setConfiguratorItem();
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
