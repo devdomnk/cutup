@@ -109,12 +109,6 @@ export default function ShoppingCart() {
   }, [setFullPrice, shoppingCart]);
 
   async function createPayment() {
-    /* const shoppingCartMetadata = shoppingCart.forEach((item, index) => {
-      return {
-        [`color${index++}`]: item.color.name,
-      };
-    }); */
-
     const docRef = collection(
       firestore,
       "customers",
@@ -134,7 +128,7 @@ export default function ShoppingCart() {
             tax_behavior: "inclusive",
             product_data: {
               name: item.fileName,
-              images: [item.image],
+              images: item.custom ? [] : [item.image],
               metadata: {
                 color: item.color.name,
                 hex: item.color.hex,
@@ -172,7 +166,6 @@ export default function ShoppingCart() {
       });
     });
   }
-  /* console.log({ ...shoppingCart[0] }); */
 
   return (
     <Container className={`${classes.container} ${smScreen ? "shadow" : ""}`}>

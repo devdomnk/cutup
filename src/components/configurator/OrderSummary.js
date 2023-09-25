@@ -157,7 +157,7 @@ export default function OrderSummary({ objectData, nextStep }) {
         tax_behavior: "inclusive",
         product_data: {
           name: objectData.fileName,
-          images: [configuratorItem?.image || objectImage],
+          images: configuratorItem?.image ? [configuratorItem?.image] : [],
           metadata: {
             color: objectData.color.name,
             hex: objectData.color.hex,

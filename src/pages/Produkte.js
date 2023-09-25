@@ -102,6 +102,10 @@ export default function Produkte() {
   const [products, setProducts] = useState([
     <CarouselCard key={uuidv4()} />,
     <CarouselCard key={uuidv4()} />,
+    <CarouselCard key={uuidv4()} />,
+    <CarouselCard key={uuidv4()} />,
+    <CarouselCard key={uuidv4()} />,
+    <CarouselCard key={uuidv4()} />,
   ]);
 
   useEffect(() => {
