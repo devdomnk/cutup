@@ -1,5 +1,4 @@
 import {
-  Divider,
   Group,
   Image,
   Stack,
