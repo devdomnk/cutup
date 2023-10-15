@@ -9,7 +9,6 @@ import {
   Stack,
 } from "@mantine/core";
 import { IconListDetails } from "@tabler/icons";
-
 import { useShoppingCart } from "../context/shoppingCartContext";
 import ItemDisplayArticle from "./ItemDisplayArticle";
 import { useSmScreen } from "../context/mediaQueryContext";
