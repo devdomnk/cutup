@@ -100,7 +100,7 @@ export default function ItemDisplay({ availableColors }) {
         styles={{ root: { position: "relative" } }}
       />
       <Stack spacing={10}>
-        {shoppingCart.map((item, index) => (
+        {shoppingCart.map((item) => (
           <>
             <ItemDisplayArticle
               key={uuidv4()}
