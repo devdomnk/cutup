@@ -13,6 +13,7 @@ import { IconListDetails } from "@tabler/icons";
 import { useShoppingCart } from "../context/shoppingCartContext";
 import ItemDisplayArticle from "./ItemDisplayArticle";
 import { useSmScreen } from "../context/mediaQueryContext";
+import { v4 as uuidv4 } from "uuid";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -102,7 +103,7 @@ export default function ItemDisplay({ availableColors }) {
         {shoppingCart.map((item, index) => (
           <>
             <ItemDisplayArticle
-              key={index}
+              key={uuidv4()}
               name={item.fileName}
               price={item.price}
               color={item.color.hex}

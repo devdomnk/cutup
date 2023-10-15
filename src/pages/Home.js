@@ -105,7 +105,9 @@ export default function Home({ initialPageDelay }) {
   useLayoutEffect(() => {
     function adjustRightOffset() {
       const styles = window.getComputedStyle(innerRef.current);
-      setRightOffset(styles.getPropertyValue("margin-right").split("p")[0]);
+      setRightOffset(
+        (window.innerWidth - styles.getPropertyValue("width").split("p")[0]) / 2
+      );
     }
 
     window.addEventListener("resize", adjustRightOffset);
@@ -117,7 +119,9 @@ export default function Home({ initialPageDelay }) {
 
   useLayoutEffect(() => {
     const styles = window.getComputedStyle(innerRef.current);
-    setRightOffset(styles.getPropertyValue("margin-right").split("p")[0]);
+    setRightOffset(
+      (window.innerWidth - styles.getPropertyValue("width").split("p")[0]) / 2
+    );
   }, []);
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -251,6 +255,7 @@ export default function Home({ initialPageDelay }) {
       top: 0,
       height: "100%",
       overflow: "hidden",
+      maxHeight: "100%",
     },
     horizontalAlignmentLine: {
       position: "absolute",
@@ -363,10 +368,10 @@ export default function Home({ initialPageDelay }) {
       <Container size={1480} className={classes.inner} ref={innerRef}>
         <motion.div
           initial={{
-            height: "0%",
+            height: 0,
           }}
           animate={{
-            height: "100%",
+            height: 1010,
             transition: {
               delay: initialPageDelay,
               type: "tween",
