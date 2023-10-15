@@ -74,6 +74,10 @@ const useStyles = createStyles((theme) => ({
     height: 370,
     cursor: "pointer",
     position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 12,
     [theme.fn.smallerThan("xl")]: {
       height: 500,
     },
@@ -716,34 +720,38 @@ export default function Configurator({ storageref, setObjectData, nextStep }) {
               </>
             )}
           </div>
-          <Suspense fallback={<Loader />}>
-            <Canvas camera={{ position: [100, 40, 100], fov: 40 }}>
-              <ambientLight />
-              <pointLight position={[100, 100, 100]} />
-              <pointLight position={[-100, -100, -100]} />
-              {stlUrl && (
-                <STLModel
-                  url={stlUrl}
-                  initialRotationX={Math.PI * 1.5}
+          {!stlUrl ? (
+            <Loader />
+          ) : (
+            <Suspense fallback={<Loader />}>
+              <Canvas camera={{ position: [100, 40, 100], fov: 40 }}>
+                <ambientLight />
+                <pointLight position={[100, 100, 100]} />
+                <pointLight position={[-100, -100, -100]} />
+                {stlUrl && (
+                  <STLModel
+                    url={stlUrl}
+                    initialRotationX={Math.PI * 1.5}
+                    position={[0, -14, 0]}
+                  />
+                )}
+                <gridHelper
                   position={[0, -14, 0]}
+                  args={[
+                    objectMeasurements.x * objectScale > 100 ||
+                    objectMeasurements.y * objectScale > 100 ||
+                    objectMeasurements.z * objectScale > 100
+                      ? 450
+                      : 300,
+                    20,
+                    "lightgray",
+                    "lightgray",
+                  ]}
                 />
-              )}
-              <gridHelper
-                position={[0, -14, 0]}
-                args={[
-                  objectMeasurements.x * objectScale > 100 ||
-                  objectMeasurements.y * objectScale > 100 ||
-                  objectMeasurements.z * objectScale > 100
-                    ? 450
-                    : 300,
-                  20,
-                  "lightgray",
-                  "lightgray",
-                ]}
-              />
-              <Controls />
-            </Canvas>
-          </Suspense>
+                <Controls />
+              </Canvas>
+            </Suspense>
+          )}
         </div>
         <Group
           position="right"
