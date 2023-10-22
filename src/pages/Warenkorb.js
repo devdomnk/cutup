@@ -34,6 +34,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { AnimatePresence } from "framer-motion";
 import RecommendedSection from "../components/cart/RecommendedSection.js";
+import { useMediaQuery } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -96,6 +97,7 @@ export default function Warenkorb() {
   const shoppingCart = useShoppingCart();
   const xlScreen = useXlScreen();
   const smScreen = useSmScreen();
+  const xxsScreen = useMediaQuery("(min-width: 420px)");
   const firestore = useFirestore();
 
   const [availableColors, setAvailableColors] = useState([]);
@@ -155,7 +157,12 @@ export default function Warenkorb() {
             <RecommendedSection />
           </>
         ) : (
-          <EmptyCart />
+          <>
+            <Stack spacing={xxsScreen ? 130 : 100}>
+              <EmptyCart />
+              <RecommendedSection />
+            </Stack>
+          </>
         )}
       </Container>
     </motion.div>
