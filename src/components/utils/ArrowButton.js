@@ -146,11 +146,6 @@ export default function ArrowButton({
               width: unlimitedOnPhone ? "100%" : null,
             },
           },
-          a: {
-            [theme.fn.smallerThan(420)]: {
-              width: unlimitedOnPhone ? "100%" : null,
-            },
-          },
           rightIcon: {
             marginLeft: unlimitedOnPhone
               ? xxsScreen
