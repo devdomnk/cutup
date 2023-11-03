@@ -77,6 +77,7 @@ export function CarouselCard({
   description,
   priceID,
   rating,
+  ref,
 }) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -112,6 +113,7 @@ export function CarouselCard({
 
   return (
     <Card
+      ref={ref}
       radius="md"
       withBorder
       p={smScreen ? "xl" : "lg"}

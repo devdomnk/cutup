@@ -8,6 +8,7 @@ import {
   useMantineTheme,
   Image,
   Button,
+  Loader,
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { CarouselCard } from "../components/utils/CarouselCard.js";
@@ -115,6 +116,7 @@ export default function Produkte() {
 
   const [allProductsfetched, setAllProductsFetched] = useState(false);
   const [products, setProducts] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
 
   const [productCards, setProductCards] = useState([
     <CarouselCard key={uuidv4()} />,
@@ -136,7 +138,7 @@ export default function Produkte() {
       ItemCollection,
       where("active", "==", true),
       orderBy(documentId()),
-      limit(queryLimit || 9),
+      limit(queryLimit || 6),
       startAtBeginning
         ? startAt(products[products.length - 1]?.id || "prod_MciR7Z2jxRD9Rr")
         : startAfter(products[products.length - 1]?.id || "prod_MciR7Z2jxRD9Rr")
@@ -147,7 +149,7 @@ export default function Produkte() {
     const pricesSnapshot = await getDocs(
       query(
         collectionGroup(firestore, "prices"),
-        limit(queryLimit || 9),
+        limit(queryLimit || 6),
         orderBy("product"),
         startAtBeginning
           ? startAt(products[products.length - 1]?.id || "prod_MciR7Z2jxRD9Rr")
@@ -294,10 +296,15 @@ export default function Produkte() {
   }, []);
 
   useEffect(() => {
-    function loadProductsOnBottom() {
-      if (getDistanceToPageBottom() > 0) return;
+    async function loadProductsOnBottom() {
+      if (
+        getDistanceToPageBottom() > 0 ||
+        isLoadingProducts ||
+        allProductsfetched
+      )
+        return;
 
-      loadProducts();
+      await loadProducts();
 
       function getDistanceToPageBottom() {
         return (
@@ -417,6 +424,9 @@ export default function Produkte() {
         ></div>
         <AnimatePresence mode="wait">
           {productCards}
+          {isLoadingProducts ? (
+            <Loader sx={{ minWidth: smScreen ? 370 : 200 }} />
+          ) : null}
           {/* <Button onClick={loadProducts}>Load more</Button> */}
         </AnimatePresence>
       </Container>
